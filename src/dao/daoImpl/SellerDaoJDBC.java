@@ -11,7 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDaoJDBC implements SellerDao {
     private Connection conn = null;
@@ -59,6 +62,39 @@ public class SellerDaoJDBC implements SellerDao {
             DB.closeResource(ps);
         }
         return seller;
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        List<Seller> sellers = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement("select seller.*,department.Name as DepName " +
+                    "from seller inner join department " +
+                    "on seller.DepartmentId = department.Id " +
+                    "where department.id = ?");
+            ps.setInt(1,department.getId());
+            rs = ps.executeQuery();
+            Map<Integer, Department> departmentMap = new HashMap<>();
+            while (rs.next()){
+                Department dep = departmentMap.get(rs.getInt("DepartmentId"));
+                if(dep == null){
+                   dep = instantiateDepartment(rs);
+                   departmentMap.put(rs.getInt("DepartmentId"),dep);
+                }
+                Seller seller = instatiateSeller(rs,dep);
+                sellers.add(seller);
+            }
+        }
+        catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeResource(rs);
+            DB.closeResource(ps);
+        }
+        return sellers;
     }
 
     @Override
