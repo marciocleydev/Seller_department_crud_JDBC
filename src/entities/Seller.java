@@ -8,14 +8,14 @@ import java.util.Objects;
 public class Seller implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private int id;
+    private Integer id;
     private String name;
     private String email;
     private LocalDate birthDate;
     private double baseSalary;
     private Department department;
 
-    public Seller(int id, String name, String email, LocalDate birthDate, double baseSalary, Department department) {
+    public Seller(Integer id, String name, String email, LocalDate birthDate, double baseSalary, Department department) {
         this.id = id;
         this.name = name;
         this.email = email;
