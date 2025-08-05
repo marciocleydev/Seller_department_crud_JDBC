@@ -32,6 +32,10 @@ public class Program {
         seller.setName("Joao");
         seller.setBaseSalary(8690.00);
         sellerDao.update(seller);
+        System.out.println("\n===TEST 6: Seller delete ====");
+        System.out.print("Digite um id para ser deletado: ");
+        int id = sc.nextInt();
+        sellerDao.deleteById(id);
 
         sc.close();
 
