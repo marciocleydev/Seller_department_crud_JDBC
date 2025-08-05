@@ -28,6 +28,10 @@ public class Program {
         Seller insertSeller = new Seller(null, "Rogerio", "rogerio@gmail.com", LocalDate.parse("1997-12-28"), 2000.00,department);
         sellerDao.insert(insertSeller);
         System.out.println("\nid = " + insertSeller.getId());
+        System.out.println("\n===TEST 5: Seller Update ====");
+        seller.setName("Joao");
+        seller.setBaseSalary(8690.00);
+        sellerDao.update(seller);
 
         sc.close();
 
